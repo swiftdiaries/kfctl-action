@@ -33,19 +33,20 @@ export async function buildkfctl(version: string) {
 // TODO(swiftdiaries): set kubeflow version in download URL
 export async function downloadKfctl(version: string) {
     const kfctlPath: string = "/home/runner/bin";
-    console.log("making directory at: " + kfctlPath)
+    console.log("making directory at: " + kfctlPath);
     await io.mkdirP(kfctlPath);
 
     let kfctlUrl: string = `https://github.com/kubeflow/kubeflow/releases/download/v0.7.0-rc.7/kfctl_v0.7.0-rc.5-27-g7f64d8b0_linux.tar.gz`;
-    console.log("downloading kfctl from: " + kfctlUrl)
+    console.log("downloading kfctl from: " + kfctlUrl);
     const downloadPath = await tc.downloadTool(kfctlUrl);
+    await exec.exec("chmod", ["+x", downloadPath]);
     await io.mv(downloadPath, path.join(kfctlPath, "kfctl_v0.7.0-rc.5-27-g7f64d8b0_linux.tar.gz"));
 
-    const extractedFolder: string = await tc.extractTar(path.join(kfctlPath, "kfctl_v0.7.0-rc.5-27-g7f64d8b0_linux.tar.gz"), kfctlPath)
-    await io.mv(extractedFolder, kfctlPath)
-    console.log("extracting kfctl tarball to: " + kfctlPath + "/kfctl")
+    const extractedFolder = await tc.extractTar(path.join(kfctlPath, "kfctl_v0.7.0-rc.5-27-g7f64d8b0_linux.tar.gz"), kfctlPath);
+    await io.mv(extractedFolder, kfctlPath);
+    console.log("extracting kfctl tarball to: " + kfctlPath + "/kfctl");
 
-    core.addPath(kfctlPath)
+    core.addPath(kfctlPath);
 }
 
 export async function installKubeflow(config: string) {
@@ -59,10 +60,12 @@ export async function downloadKFConfig(version: string) {
     let downloadPath: string | null = null;
     downloadPath = await tc.downloadTool(url);
     
-    const kfconfigPath: string = "/home/runner/bin";
+    const kfconfigPath: string = "/home/runner/config";
     await io.mkdirP(kfconfigPath);
-    await exec.exec("chmod", ["+x", path.join(downloadPath, "kfctl_k8s_istio.yaml")])
+    await exec.exec("chmod", ["+x", downloadPath]);
     await io.mv(downloadPath, path.join(kfconfigPath, "kfctl_k8s_istio.yaml"));
 
-    core.addPath(kfconfigPath)
+    await exec.exec("ls", [kfconfigPath])
+    const cachePath = await tc.cacheDir(kfconfigPath, 'kfconfig', 'master');
+    core.addPath(cachePath);
 }
