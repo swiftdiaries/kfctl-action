@@ -1,10 +1,17 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'kfctl with KinD (Kubernetes in Docker)'
+description: 'Easily run a Kubeflow cluster in your Action'
+author: 'Adhita Selvaraj'
 inputs:
-  myInput:              # change this
-    description: 'input description here'
-    default: 'default value if applicable'
+  version:
+    description: 'Version of KinD to use (default v0.6.2)'
+    default: 'v0.6.2'
+  config:
+    description: 'Kubeflow config filepath (relative to root of the repository)'
+
+branding:
+  color: 'blue'
+  icon: 'upload-cloud'
+
 runs:
   using: 'node12'
   main: 'lib/main.js'

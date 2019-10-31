@@ -1,16 +1,12 @@
 import * as core from '@actions/core';
-import {wait} from './wait'
+import {KubeflowConfig, getKubeflowConfig, downloadKFConfig, installKubeflow, downloadKfctl} from './kind-kf';
 
 async function run() {
   try {
-    const ms = core.getInput('milliseconds');
-    console.log(`Waiting ${ms} milliseconds ...`)
-
-    core.debug((new Date()).toTimeString())
-    await wait(parseInt(ms, 10));
-    core.debug((new Date()).toTimeString())
-
-    core.setOutput('time', new Date().toTimeString());
+    let cfg: KubeflowConfig = getKubeflowConfig();
+    await downloadKFConfig(cfg.version);
+    await downloadKfctl(cfg.version);
+    await installKubeflow(cfg.configFile);
   } catch (error) {
     core.setFailed(error.message);
   }
