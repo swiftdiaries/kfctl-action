@@ -40,12 +40,13 @@ export async function downloadKfctl(version: string) {
     let downloadPath: string | null = null;
     console.log("downloading kfctl from: " + kfctlUrl)
     downloadPath = await tc.downloadTool(kfctlUrl);
+    await io.mv(downloadPath, path.join(kfctlPath, "kfctl_v0.7.0-rc.5-27-g7f64d8b0_linux.tar.gz"));
 
-    let extractedFolder: string = await tc.extractTar(downloadPath, kfctlPath)
-    console.log("extracting kfctl from: " + extractedFolder)
-    await io.mv(extractedFolder, path.join(kfctlPath, "kfctl"))
+    let extractedFolder: string = await tc.extractTar(path.join(kfctlPath, "kfctl_v0.7.0-rc.5-27-g7f64d8b0_linux.tar.gz"), kfctlPath)
+    await io.mv(extractedFolder, kfctlPath)
+    console.log("extracting kfctl tarball to: " + kfctlPath + "/kfctl")
 
-    core.addPath(path.join(kfctlPath, "kfctl"))
+    core.addPath(kfctlPath)
 }
 
 export async function installKubeflow(config: string) {
