@@ -41,6 +41,8 @@ export async function downloadKfctl(version: string) {
     downloadPath = await tc.downloadTool(kfctlUrl);
     console.log("downloading kfctl from: " + kfctlUrl)
 
+    console.log("Things inside the directory: ")
+    await exec.exec("ls", [downloadPath])
     let extractedFolder: string = await tc.extractTar(downloadPath, kfctlPath)
     await io.mv(extractedFolder, path.join(kfctlPath, "kfctl"))
     console.log("extracting kfctl tarball to: " + kfctlPath + "/kfctl")
