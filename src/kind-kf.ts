@@ -37,12 +37,11 @@ export async function downloadKfctl(version: string) {
     await io.mkdirP(kfctlPath);
 
     let kfctlUrl: string = `https://github.com/kubeflow/kubeflow/releases/download/v0.7.0-rc.7/kfctl_v0.7.0-rc.5-27-g7f64d8b0_linux.tar.gz`;
-    let downloadPath: string | null = null;
     console.log("downloading kfctl from: " + kfctlUrl)
-    downloadPath = await tc.downloadTool(kfctlUrl);
+    const downloadPath = await tc.downloadTool(kfctlUrl);
     await io.mv(downloadPath, path.join(kfctlPath, "kfctl_v0.7.0-rc.5-27-g7f64d8b0_linux.tar.gz"));
 
-    let extractedFolder: string = await tc.extractTar(path.join(kfctlPath, "kfctl_v0.7.0-rc.5-27-g7f64d8b0_linux.tar.gz"), kfctlPath)
+    const extractedFolder: string = await tc.extractTar(path.join(kfctlPath, "kfctl_v0.7.0-rc.5-27-g7f64d8b0_linux.tar.gz"), kfctlPath)
     await io.mv(extractedFolder, kfctlPath)
     console.log("extracting kfctl tarball to: " + kfctlPath + "/kfctl")
 
@@ -62,7 +61,7 @@ export async function downloadKFConfig(version: string) {
     
     const kfconfigPath: string = "/home/runner/bin";
     await io.mkdirP(kfconfigPath);
-    await exec.exec("chmod", ["+x", downloadPath])
+    await exec.exec("chmod", ["+x", path.join(downloadPath, "kfctl_k8s_istio.yaml")])
     await io.mv(downloadPath, path.join(kfconfigPath, "kfctl_k8s_istio.yaml"));
 
     core.addPath(kfconfigPath)
