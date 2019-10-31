@@ -33,17 +33,17 @@ export async function buildkfctl(version: string) {
 // TODO(swiftdiaries): set kubeflow version in download URL
 export async function downloadKfctl(version: string) {
     const kfctlPath: string = "/home/runner/bin";
-    await io.mkdirP(kfctlPath);
     console.log("making directory at: " + kfctlPath)
+    await io.mkdirP(kfctlPath);
 
     let kfctlUrl: string = `https://github.com/kubeflow/kubeflow/releases/download/v0.7.0-rc.7/kfctl_v0.7.0-rc.5-27-g7f64d8b0_linux.tar.gz`;
     let downloadPath: string | null = null;
-    downloadPath = await tc.downloadTool(kfctlUrl);
     console.log("downloading kfctl from: " + kfctlUrl)
+    downloadPath = await tc.downloadTool(kfctlUrl);
 
     let extractedFolder: string = await tc.extractTar(downloadPath, kfctlPath)
+    console.log("extracting kfctl from: " + extractedFolder)
     await io.mv(extractedFolder, path.join(kfctlPath, "kfctl"))
-    console.log("extracting kfctl tarball to: " + kfctlPath + "/kfctl")
 
     core.addPath(path.join(kfctlPath, "kfctl"))
 }
