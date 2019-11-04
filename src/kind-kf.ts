@@ -36,13 +36,14 @@ export async function downloadKfctl(version: string) {
     console.log("making directory at: " + kfctlPath);
     await io.mkdirP(kfctlPath);
 
-    let kfctlUrl: string = `https://github.com/kubeflow/kubeflow/releases/download/v0.7.0-rc.7/kfctl_v0.7.0-rc.5-27-g7f64d8b0_linux.tar.gz`;
+    let kfctlUrl: string = `https://github.com/kubeflow/kubeflow/releases/download/v0.7.0/kfctl_v0.7.0_linux.tar.gz`;
     console.log("downloading kfctl from: " + kfctlUrl);
     const downloadPath = await tc.downloadTool(kfctlUrl);
     await exec.exec("chmod", ["+x", downloadPath]);
-    await io.mv(downloadPath, path.join(kfctlPath, "kfctl_v0.7.0-rc.5-27-g7f64d8b0_linux.tar.gz"));
+    await exec.exec("ls", [kfctlPath])
+    await io.mv(downloadPath, path.join(kfctlPath, "kfctl_v0.7.0_linux.tar.gz"));
 
-    const extractedFolder = await tc.extractTar(path.join(kfctlPath, "kfctl_v0.7.0-rc.5-27-g7f64d8b0_linux.tar.gz"), kfctlPath);
+    const extractedFolder = await tc.extractTar(path.join(kfctlPath, "kfctl_v0.7.0_linux.tar.gz"), kfctlPath);
     await io.mv(extractedFolder, kfctlPath);
     console.log("extracting kfctl tarball to: " + kfctlPath + "/kfctl");
 
@@ -54,7 +55,7 @@ export async function installKubeflow(config: string) {
 }
 
 export async function downloadKFConfig(version: string) {
-    let url: string = `https://raw.githubusercontent.com/kubeflow/kubeflow/master/bootstrap/config/kfctl_k8s_istio.yaml`;
+    let url: string = `https://raw.githubusercontent.com/kubeflow/manifests/master/kfdef/kfctl_k8s_istio.yaml`;
     console.log("downloading KFConfig from " + url);
     
     let downloadPath: string | null = null;
@@ -64,7 +65,7 @@ export async function downloadKFConfig(version: string) {
     await io.mkdirP(kfconfigPath);
     await exec.exec("chmod", ["+x", downloadPath]);
     await io.mv(downloadPath, path.join(kfconfigPath, "kfctl_k8s_istio.yaml"));
-
+    await exec.exec("cat", [kfconfigPath, "kfctl_k8s_istio.yaml"])
     await exec.exec("ls", [kfconfigPath])
     const cachePath = await tc.cacheDir(kfconfigPath, 'kfconfig', 'master');
     core.addPath(cachePath);

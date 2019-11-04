@@ -6,7 +6,7 @@
   "main": "lib/main.js",
   "scripts": {
     "build": "tsc",
-    "test": "jest"
+    "test": "mocha --require ts-node/register --recursive ./test/**/*.ts"
   },
   "repository": {
     "type": "git",
@@ -24,6 +24,8 @@
     "@actions/exec": "^1.0.1",
     "@actions/io": "^1.0.1",
     "@actions/tool-cache": "^1.1.2",
+    "@types/chai": "^4.2.4",
+    "chai": "^4.2.0",
     "path": "^0.12.7"
   },
   "devDependencies": {
