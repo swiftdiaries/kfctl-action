@@ -24,7 +24,4 @@ jobs:
       run: |
         export KUBECONFIG="$(kind get kubeconfig-path)"
         kubectl get po -A
-    # Install Kubeflow on the cluster using KFConfig
-    - uses: ./
-      with: 
-        milliseconds: 1000
+        ./
