@@ -44,7 +44,7 @@ export async function downloadKfctl(version: string) {
     console.log("Things inside the directory: ");
     await exec.exec("ls", [downloadPath]);
     let extractedFolder: string | null = null;
-    extractedFolder = await tc.extractTar(downloadPath, '/home/runner/bin');
+    extractedFolder = await tc.extractTar(downloadPath, '/home/runner/bin/bin');
     await io.mv(extractedFolder, kfctlPath);
     console.log("extracting kfctl tarball to: " + kfctlPath + "/kfctl");
 
