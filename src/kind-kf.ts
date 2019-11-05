@@ -34,7 +34,7 @@ export async function buildkfctl(version: string) {
 export async function downloadKfctl(version: string) {
     const kfctlPath: string = "/home/runner/bin";
     await io.mkdirP(kfctlPath);
-    await io.mkdirP('/home/runner/bin/bin')
+    await io.mkdirP('/home/runner/bin/bin');
     console.log("making directory at: " + kfctlPath)
 
     let kfctlUrl: string = `https://github.com/kubeflow/kubeflow/releases/download/v0.7.0/kfctl_v0.7.0_linux.tar.gz`;
