@@ -1,14 +1,14 @@
 import * as core from '@actions/core';
-import {KubeflowConfig, getKubeflowConfig, installKubeflow, downloadKfctl, downloadKfConfig, checkCluster} from './kind-kf';
+import {KubeflowConfig, getKubeflowConfig, installKubeflow, downloadKfctl, downloadKfConfig} from './kind-kf';
 
 async function run() {
   try {
     let cfg: KubeflowConfig = getKubeflowConfig();
     // await buildKfctl(cfg.version);
-    await checkCluster();
+    // await checkCluster();
     await downloadKfConfig(cfg.version);
     await downloadKfctl(cfg.version);
-    await installKubeflow(cfg.configFile);
+    // await installKubeflow(cfg.configFile);
   } catch (error) {
     core.setFailed(error.message);
   }

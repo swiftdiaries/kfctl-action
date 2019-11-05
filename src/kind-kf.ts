@@ -48,9 +48,3 @@ export async function installKubeflow(config: string) {
 export async function downloadKfConfig(version: string) {
     await exec.exec("wget", ["-O", path.join(kfctlPath, "kfctl_k8s_istio.yaml"), kfConfigUrl]);
 }
-
-export async function checkCluster() {
-    let getKubeConfigCmd: string = '"$(kind get kubeconfig-path)"';
-    await exec.exec("export", ["KUBECONFIG="+getKubeConfigCmd])
-    await exec.exec("kubectl", ["get", "no"])
-}
