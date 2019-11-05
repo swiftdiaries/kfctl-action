@@ -67,6 +67,8 @@ export async function downloadKFConfig(version: string) {
     await io.mkdirP(kfconfigPath);
     await exec.exec("chmod", ["+x", downloadPath]);
     await io.mv(downloadPath, path.join(kfconfigPath, "kfctl_k8s_istio.yaml"));
+    console.log("using config file: ")
+    await exec.exec("cat", [kfconfigPath ,"kfctl_k8s_istio.yaml"])
 
     core.addPath(kfconfigPath);
 }
