@@ -8,7 +8,7 @@ async function run() {
     // await checkCluster();
     await downloadKfConfig(cfg.version);
     await downloadKfctl(cfg.version);
-    // await installKubeflow(cfg.configFile);
+    await installKubeflow(cfg.configFile);
   } catch (error) {
     core.setFailed(error.message);
   }

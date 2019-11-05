@@ -28,4 +28,3 @@ jobs:
     - uses: ./
       with: 
         milliseconds: 1000
-    - run: /home/runner/bin/kfctl apply -V -f /home/runner/bin/kfctl_k8s_istio.yaml
