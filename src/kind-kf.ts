@@ -35,20 +35,15 @@ export async function downloadKfctl(version: string) {
     const kfctlPath: string = "/home/runner/bin";
     await io.mkdirP(kfctlPath);
     await io.mkdirP('/home/runner/bin/bin');
-    console.log("making directory at: " + kfctlPath)
+    console.log("making directory at: " + kfctlPath);
 
     let kfctlUrl: string = `https://github.com/kubeflow/kubeflow/releases/download/v0.7.0/kfctl_v0.7.0_linux.tar.gz`;
-    let downloadPath: string | null = null;
-    downloadPath = await tc.downloadTool(kfctlUrl);
-    console.log("downloading kfctl from: " + kfctlUrl);
-
-    console.log("Things inside the directory: ");
-    await exec.exec("ls", [downloadPath]);
-    let extractedFolder: string | null = null;
-    extractedFolder = await tc.extractTar(downloadPath, '/home/runner/bin/bin');
-    await io.mv(extractedFolder, kfctlPath);
     console.log("extracting kfctl tarball to: " + kfctlPath + "/kfctl");
-
+    await exec.exec("wget", ["-O", path.join(kfctlPath, "kfctl.tar.gz"), kfctlUrl]);
+    await exec.exec("tar", ["-zxvf", path.join(kfctlPath, "kfctl.tar.gz")]);
+    console.log("The kfctl directory contains: ");
+    await exec.exec("ls", [kfctlPath]);
+    await exec.exec(path.join(kfctlPath, "kfctl"));
     core.addPath(kfctlPath);
 }
 
