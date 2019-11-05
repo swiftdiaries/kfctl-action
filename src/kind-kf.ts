@@ -50,6 +50,7 @@ export async function downloadKfConfig(version: string) {
 }
 
 export async function checkCluster() {
-    await exec.exec("export", ["KUBECONFIG=$(kind get kubeconfig-path)"])
+    let getKubeConfigCmd: string = "$(kind get kubeconfig-path)";
+    await exec.exec("export", ["KUBECONFIG="+getKubeConfigCmd])
     await exec.exec("kubectl", ["get", "no"])
 }
