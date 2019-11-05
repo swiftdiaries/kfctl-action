@@ -33,6 +33,7 @@ export async function buildkfctl(version: string) {
 // TODO(swiftdiaries): set kubeflow version in download URL
 export async function downloadKfctl(version: string) {
     const kfctlPath: string = "/home/runner/bin";
+    let kfConfigUrl: string = `https://raw.githubusercontent.com/kubeflow/manifests/master/kfdef/kfctl_k8s_istio.yaml`;
     await io.mkdirP(kfctlPath);
     console.log("making directory at: " + kfctlPath);
 
@@ -42,28 +43,11 @@ export async function downloadKfctl(version: string) {
     await exec.exec("tar", ["-zxvf", path.join(kfctlPath, "kfctl.tar.gz"), "-C", kfctlPath]);
     console.log("The kfctl directory contains: ");
     await exec.exec("ls", [kfctlPath]);
-    await exec.exec("chmod", ["+x", path.join(kfctlPath, "kfctl")])
-    await exec.exec(path.join(kfctlPath, "kfctl"), ["apply", "-V", "-h"]);
+    await exec.exec("chmod", ["+x", path.join(kfctlPath, "kfctl")]);
+    await exec.exec(path.join(kfctlPath, "kfctl"), ["apply", "-V", "-f", kfConfigUrl]);
     core.addPath(kfctlPath);
 }
 
 export async function installKubeflow(config: string) {
 
-}
-
-export async function downloadKFConfig(version: string) {
-    let url: string = `https://raw.githubusercontent.com/kubeflow/manifests/master/kfdef/kfctl_k8s_istio.yaml`;
-    console.log("downloading KFConfig from " + url);
-    
-    let downloadPath: string | null = null;
-    downloadPath = await tc.downloadTool(url);
-    
-    const kfconfigPath: string = "/home/runner/bin";
-    await io.mkdirP(kfconfigPath);
-    await exec.exec("chmod", ["+x", downloadPath]);
-    await io.mv(downloadPath, path.join(kfconfigPath, "kfctl_k8s_istio.yaml"));
-    console.log("using config file: ")
-    await exec.exec("cat", [path.join(kfconfigPath ,"kfctl_k8s_istio.yaml")])
-
-    core.addPath(kfconfigPath);
 }
