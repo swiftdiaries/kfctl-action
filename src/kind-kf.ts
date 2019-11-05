@@ -39,7 +39,7 @@ export async function downloadKfctl(version: string) {
     let kfctlUrl: string = `https://github.com/kubeflow/kubeflow/releases/download/v0.7.0/kfctl_v0.7.0_linux.tar.gz`;
     console.log("extracting kfctl tarball to: " + kfctlPath + "/kfctl");
     await exec.exec("wget", ["-O", path.join(kfctlPath, "kfctl.tar.gz"), kfctlUrl]);
-    await exec.exec("tar", ["-zxvf", path.join(kfctlPath, "kfctl.tar.gz")]);
+    await exec.exec("tar", ["-zxvf", path.join(kfctlPath, "kfctl.tar.gz"), "-C", kfctlPath]);
     console.log("The kfctl directory contains: ");
     await exec.exec("ls", [kfctlPath]);
     await exec.exec("chmod", ["+x", path.join(kfctlPath, "kfctl")])
