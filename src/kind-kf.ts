@@ -46,5 +46,5 @@ export async function installKubeflow(config: string) {
 }
 
 export async function downloadKfConfig(version: string) {
-    await exec.exec("wget", ["-O", kfctlPath, kfctlUrl]);
+    await exec.exec("wget", ["-O", path.join(kfctlPath, "kfctl_k8s_istio.yaml"), kfConfigUrl]);
 }
