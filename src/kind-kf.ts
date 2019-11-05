@@ -1,5 +1,4 @@
 import * as core from '@actions/core';
-import * as tc from '@actions/tool-cache';
 import * as exec from '@actions/exec';
 import * as io from '@actions/io';
 import * as path from 'path';
@@ -42,6 +41,8 @@ export async function downloadKfctl(version: string) {
 }
 
 export async function installKubeflow(config: string) {
+    const getKubeconfigCmd: string = `"$(kind get kubeconfig-path)"`;
+    await exec.exec("kind", ["get", getKubeconfigCmd]);
     await exec.exec(path.join(kfctlPath, "kfctl"), ["apply", "-V", "-f", path.join(kfctlPath, "kfctl_k8s_istio.yaml")]);
 }
 
