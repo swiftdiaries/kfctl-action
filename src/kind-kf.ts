@@ -37,6 +37,7 @@ export async function downloadKfctl(version: string) {
     await exec.exec("ls", [kfctlPath]);
     await exec.exec("chmod", ["+x", path.join(kfctlPath, "kfctl")]);
 
+    core.addPath("/home/.kube")
     core.addPath(kfctlPath);
 }
 
