@@ -27,6 +27,7 @@ jobs:
       env:
         KUBECONFIG: "/home/runner/.kube/kind-config-kind"
     # Install Kubeflow on the cluster using KFConfig
-    - uses: ./
+    - run: kubectl get po -A
+      uses: ./
       with: 
         milliseconds: 1000
