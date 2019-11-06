@@ -25,7 +25,7 @@ jobs:
         export KUBECONFIG="$(kind get kubeconfig-path)"
         kubectl get po -A
     # Install Kubeflow on the cluster using KFConfig
-    - uses: ./
+    - uses: swiftdiaries/kfctl-kind-action@v1
       env:
         KUBECONFIG: "/home/runner/.kube/kind-config-kind"
       with: 
