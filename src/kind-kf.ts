@@ -41,8 +41,7 @@ export async function downloadKfctl(version: string) {
 }
 
 export async function installKubeflow(config: string) {
-    const getKubeconfigCmd: string = `"$(kind get kubeconfig-path)"`;
-    await exec.exec("kind", ["get", getKubeconfigCmd]);
+    await exec.exec("export", ["KUBECONFIG=/home/.kube/kind-config-kind"]);
     await exec.exec(path.join(kfctlPath, "kfctl"), ["apply", "-V", "-f", path.join(kfctlPath, "kfctl_k8s_istio.yaml")]);
 }
 
