@@ -1,4 +1,4 @@
-name: 'kfctl with KinD (Kubernetes in Docker)'
+name: 'Kubeflow for CI/CD'
 description: 'Easily run a Kubeflow cluster in your Action'
 author: 'Adhita Selvaraj'
 inputs:

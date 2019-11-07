@@ -4,12 +4,21 @@
 
 ---
 
-### Using with Kubernetes in Docker (KinD)
+## This Action installs Kubeflow on a Kubernetes cluster
 
-Sample to use the GitHub Action for CI/CD in your Kubeflow projects
+What is this used for?
+
+- Automatic testing of [Kubeflow](www.kubeflow.org) applications.
+
+### Usage
+---------
+
+#### Example Workflow with Kubernetes in Docker (KinD)
+
+This Action is used in the third step.
 ```
 ...
-name: "Kubeflow CI/CD"
+name: "Kubeflow CI/CD via Actions"
 on:
   pull_request:
   push:
@@ -21,18 +30,29 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-    - name: checkout the repo
+
+    #######################################
+    ### This is the Action that copies code
+    ### from the current repo
+    - name: Step 1 - Checkout the repo
       uses: actions/checkout@v1
-    - name: create KinD cluster
+    
+    ###################################
+    ### This is the Action that creates
+    ### a Kubernetes in Docker cluster
+    - name: Step 2 - create a KinD cluster
       uses: engineerd/setup-kind@v0.1.0
       with:
           version: "v0.5.0"
-    - uses: swiftdiaries/kfctl-kind-action@v1
+    
+    ####################################
+    ### This is the Action that installs
+    ### Kubeflow on the KinD cluster
+    - name: Step 3 - 
+      uses: swiftdiaries/kfctl-kind-action@v1
       env:
         KUBECONFIG: "/home/runner/.kube/kind-config-kind"
       with: 
         milliseconds: 1000
 ...
 ```
-
-## 
