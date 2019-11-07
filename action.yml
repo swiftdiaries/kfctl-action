@@ -5,8 +5,6 @@ inputs:
   version:
     description: 'Version of KinD to use (default v0.6.2)'
     default: 'v0.6.2'
-  config:
-    description: 'Kubeflow config filepath (relative to root of the repository)'
 
 branding:
   color: 'blue'
