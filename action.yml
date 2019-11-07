@@ -1,12 +1,10 @@
-name: 'kfctl with KinD (Kubernetes in Docker)'
+name: 'Kubeflow for CI/CD'
 description: 'Easily run a Kubeflow cluster in your Action'
 author: 'Adhita Selvaraj'
 inputs:
   version:
     description: 'Version of KinD to use (default v0.6.2)'
     default: 'v0.6.2'
-  config:
-    description: 'Kubeflow config filepath (relative to root of the repository)'
 
 branding:
   color: 'blue'

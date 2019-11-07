@@ -10,11 +10,23 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-
+    - name: checkout the repo
+      uses: actions/checkout@v1
+    # Build the GitHub Action
+    - run: npm ci
     - run: npm run build
-# TODO(swiftdiaries): Add tests back
-#    - run: npm test
-    - uses: ./
+
+    - name: create KinD cluster
+      uses: engineerd/setup-kind@v0.1.0
+      with:
+          version: "v0.5.0"
+    - name: test KinD cluster status
+      run: |
+        export KUBECONFIG="$(kind get kubeconfig-path)"
+        kubectl get po -A
+    # Install Kubeflow on the cluster using KFConfig
+    - uses: swiftdiaries/kfctl-kind-action@v1
+      env:
+        KUBECONFIG: "/home/runner/.kube/kind-config-kind"
       with: 
         milliseconds: 1000
