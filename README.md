@@ -1,6 +1,6 @@
 # Kubeflow (kfctl) GitHub Action for AI/ML CI/CD
 
-<a href="https://github.com/swiftdiaries/kfctl-kind-action"><img alt="GitHub Actions status" src="https://github.com/swiftdiaries/kfctl-kind-action/workflows/Test+kfctl+typescript-action/badge.svg"></a>
+[![Actions Status](https://github.com/swiftdiaries/kfctl-kind-action/workflows/Build/badge.svg)](https://github.com/swiftdiaries/kfctl-kind-action/actions)
 
 ---
 
