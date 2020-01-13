@@ -7,7 +7,6 @@ const VersionInput: string = "version";
 const ConfigInput: string = "config";
 const kfctlPath: string = "/home/runner/bin";
 const kfctlUrl: string = `https://github.com/kubeflow/kubeflow/releases/download/`;
-const kfConfigUrl: string = `https://raw.githubusercontent.com/kubeflow/manifests/master/kfdef/kfctl_k8s_istio.yaml`;
 
 export class KubeflowConfig {
     version: string
