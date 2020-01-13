@@ -13,6 +13,7 @@ export class KubeflowConfig {
     configFile: string;
     constructor(version: string, configFile: string) {
         this.version = version;
+        console.log("kfctl version is :"+this.version)
         if (this.version == "") {
             this.version = "v0.7.0"
         }
