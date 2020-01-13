@@ -6,7 +6,7 @@ import * as path from 'path';
 const VersionInput: string = "version";
 const ConfigInput: string = "config";
 const kfctlPath: string = "/home/runner/bin";
-const kfctlUrl: string = `https://github.com/kubeflow/kubeflow/releases/download/v0.7.0/kfctl_v0.7.0_linux.tar.gz`;
+const kfctlUrl: string = `https://github.com/kubeflow/kubeflow/releases/download/`;
 const kfConfigUrl: string = `https://raw.githubusercontent.com/kubeflow/manifests/master/kfdef/kfctl_k8s_istio.yaml`;
 
 export class KubeflowConfig {
@@ -14,6 +14,9 @@ export class KubeflowConfig {
     configFile: string;
     constructor(version: string, configFile: string) {
         this.version = version;
+        if (this.version == "") {
+            this.version = "v0.7.0"
+        }
         this.configFile = configFile;
     }
 
@@ -29,9 +32,9 @@ export function getKubeflowConfig(): KubeflowConfig {
 export async function downloadKfctl(version: string) {
     await io.mkdirP(kfctlPath);
     console.log("making directory at: " + kfctlPath);
-
     console.log("extracting kfctl tarball to: " + kfctlPath + "/kfctl");
-    await exec.exec("wget", ["-O", path.join(kfctlPath, "kfctl.tar.gz"), kfctlUrl]);
+    var kfctlVersionedUrl = kfctlUrl + version + `/kfctl_` + version + `_linux.tar.gz`;
+    await exec.exec("wget", ["-O", path.join(kfctlPath, "kfctl.tar.gz"), kfctlVersionedUrl]);
     await exec.exec("tar", ["-zxvf", path.join(kfctlPath, "kfctl.tar.gz"), "-C", kfctlPath]);
     console.log("The kfctl directory contains: ");
     await exec.exec("ls", [kfctlPath]);
@@ -46,5 +49,8 @@ export async function installKubeflow(config: string) {
 }
 
 export async function downloadKfConfig(version: string) {
-    await exec.exec("wget", ["-O", path.join(kfctlPath, "kfctl_k8s_istio.yaml"), kfConfigUrl]);
+    var versionCongfigPrefixUrl = version.substring(0,4)
+    var versionConfigPostfixUrl = version.substring(1,5)
+    var versionedConfigUrl = `https://raw.githubusercontent.com/kubeflow/manifests/`+versionCongfigPrefixUrl+`-branch/kfctl_k8s_istio.`+versionConfigPostfixUrl+`.yaml`
+    await exec.exec("wget", ["-O", path.join(kfctlPath, "kfctl_k8s_istio"+versionCongfigPrefixUrl+".yaml"), versionedConfigUrl]);
 }
