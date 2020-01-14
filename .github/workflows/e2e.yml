@@ -62,5 +62,4 @@ jobs:
       env:
         KUBECONFIG: "/home/runner/.kube/kind-config-kind"
       with:
-        version: v0.7.0
         milliseconds: 1000
