@@ -1,4 +1,4 @@
-name: "Build"
+name: "e2e"
 on:
   pull_request:
   push:
@@ -7,15 +7,14 @@ on:
       - 'releases/*'
 
 jobs:
-  build-v1-releases:
-    name: v1/releases branch workflow
+  e2e-v1-releases:
     runs-on: ubuntu-latest
     steps:
     - name: checkout the repo
       uses: actions/checkout@v1
     # Build the GitHub Action
     - run: npm install
-    - run: npm run build
+    - run: npm run-script build
 
     - name: create KinD cluster
       uses: engineerd/setup-kind@v0.1.0
@@ -36,15 +35,14 @@ jobs:
       with:
         version: v0.7.0
         milliseconds: 1000
-  build-master:
-    name: Master branch workflow
+  e2e-master:
     runs-on: ubuntu-latest
     steps:
     - name: checkout the repo
       uses: actions/checkout@v1
     # Build the GitHub Action
     - run: npm ci
-    - run: npm run build
+    - run: npm run-script build
 
     - name: create KinD cluster
       uses: engineerd/setup-kind@v0.1.0
