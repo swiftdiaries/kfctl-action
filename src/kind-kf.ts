@@ -49,9 +49,7 @@ export async function installKubeflow(config: string) {
 }
 
 export async function downloadKfConfig(version: string) {
-    var versionCongfigPrefixUrl = version.substring(0,4)
-    var versionConfigPostfixUrl = version.substring(1,5)
-    var versionedConfigUrl = `https://raw.githubusercontent.com/kubeflow/manifests/`+versionCongfigPrefixUrl+`-branch/kfctl_k8s_istio.`+versionConfigPostfixUrl+`.yaml`;
-    await exec.exec("wget", ["-O", path.join(kfctlPath, "kfctl_k8s_istio.yaml"), versionedConfigUrl]);
-    await exec.exec("cat", [path.join(kfctlPath, "kfctl_k8s_istio"+versionCongfigPrefixUrl+".yaml")]);
+    const kfConfigUrl: string = `https://raw.githubusercontent.com/kubeflow/manifests/v0.7-branch/kfdef/kfctl_k8s_istio.0.7.0.yaml`;
+    await exec.exec("wget", ["-O", path.join(kfctlPath, "kfctl_k8s_istio.yaml"), kfConfigUrl]);
+    await exec.exec("cat", [path.join(kfctlPath, "kfctl_k8s_istio.yaml")]);
 }
