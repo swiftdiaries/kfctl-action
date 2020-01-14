@@ -29,7 +29,7 @@ jobs:
         cat /home/runner/.kube/kind-config-kind
     # Install Kubeflow on the cluster using KFConfig
     - name: Install Kubeflow using kfctl
-      uses: swiftdiaries/kfctl-kind-action@v1
+      uses: swiftdiaries/kfctl-kind-action@releases/v1
       env:
         KUBECONFIG: "/home/runner/.kube/kind-config-kind"
       with:
@@ -58,7 +58,7 @@ jobs:
 
     # Install Kubeflow on the cluster using KFConfig
     - name: Install Kubeflow using kfctl
-      uses: swiftdiaries/kfctl-kind-action@master
+      uses: swiftdiaries/kfctl-kind-action@releases/v1
       env:
         KUBECONFIG: "/home/runner/.kube/kind-config-kind"
       with:
