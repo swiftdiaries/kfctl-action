@@ -19,7 +19,6 @@ export class KubeflowConfig {
         }
         this.configFile = configFile;
     }
-
 }
 
 export function getKubeflowConfig(): KubeflowConfig {
