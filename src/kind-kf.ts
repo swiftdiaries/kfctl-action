@@ -13,12 +13,12 @@ export class KubeflowConfig {
     configFile: string;
     constructor(version: string, configFile: string) {
         this.version = version;
+        console.log("kfctl version is :"+this.version)
         if (this.version == "") {
-            this.version = "v0.7.0"
+            this.version = "v0.7.1"
         }
         this.configFile = configFile;
     }
-
 }
 
 export function getKubeflowConfig(): KubeflowConfig {
@@ -48,7 +48,11 @@ export async function installKubeflow(config: string) {
 }
 
 export async function downloadKfConfig(version: string) {
+<<<<<<< HEAD
     const kfConfigUrl: string = "https://raw.githubusercontent.com/kubeflow/manifests/v0.7-branch/kfdef/kfctl_k8s_istio.0.7.0.yaml";
+=======
+    const kfConfigUrl: string = `https://raw.githubusercontent.com/kubeflow/manifests/v0.7-branch/kfdef/kfctl_k8s_istio.0.7.0.yaml`;
+>>>>>>> master
     await exec.exec("wget", ["-O", path.join(kfctlPath, "kfctl_k8s_istio.yaml"), kfConfigUrl]);
     await exec.exec("cat", [path.join(kfctlPath, "kfctl_k8s_istio.yaml")]);
 }

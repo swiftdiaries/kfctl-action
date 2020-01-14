@@ -4,8 +4,6 @@ import {KubeflowConfig, getKubeflowConfig, installKubeflow, downloadKfctl, downl
 async function run() {
   try {
     let cfg: KubeflowConfig = getKubeflowConfig();
-    // await buildKfctl(cfg.version);
-    // await checkCluster();
     await downloadKfConfig(cfg.version);
     await downloadKfctl(cfg.version);
     await installKubeflow(cfg.configFile);
