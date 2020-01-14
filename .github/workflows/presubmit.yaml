@@ -13,5 +13,8 @@ jobs:
     - name: "npm run build"
       run: npm run-script build
 
+    - name: "npx mocha install"
+      run: npx mocha install
+
     - name: "npm test"
       run: npm test
