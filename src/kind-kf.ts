@@ -15,7 +15,7 @@ export class KubeflowConfig {
         this.version = version;
         console.log("kfctl version is :"+this.version)
         if (this.version == "") {
-            this.version = "v0.7.0"
+            this.version = "v0.7.1"
         }
         this.configFile = configFile;
     }

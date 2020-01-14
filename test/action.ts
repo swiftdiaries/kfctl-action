@@ -1,3 +1,4 @@
+import "mocha";
 import { assert } from "chai";
 import { KubeflowConfig, getKubeflowConfig } from "../src/kind-kf";
 
