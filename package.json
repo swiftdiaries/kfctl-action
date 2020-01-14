@@ -5,6 +5,7 @@
   "description": "TypeScript template action",
   "main": "lib/main.js",
   "scripts": {
+    "rm": "rm -r lib/",
     "build": "tsc",
     "test": "mocha --require ts-node/register --recursive ./test/**/*.ts"
   },

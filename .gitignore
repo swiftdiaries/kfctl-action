@@ -1,5 +1,8 @@
 __tests__/runner/*
 
+# lib
+lib/
+
 # comment out in distribution branches
 node_modules/
 

@@ -52,6 +52,6 @@ export async function downloadKfConfig(version: string) {
     var versionCongfigPrefixUrl = version.substring(0,4)
     var versionConfigPostfixUrl = version.substring(1,5)
     var versionedConfigUrl = `https://raw.githubusercontent.com/kubeflow/manifests/`+versionCongfigPrefixUrl+`-branch/kfctl_k8s_istio.`+versionConfigPostfixUrl+`.yaml`;
-    await exec.exec("wget", ["-O", path.join(kfctlPath, "kfctl_k8s_istio"+versionCongfigPrefixUrl+".yaml"), versionedConfigUrl]);
+    await exec.exec("wget", ["-O", path.join(kfctlPath, "kfctl_k8s_istio.yaml"), versionedConfigUrl]);
     await exec.exec("cat", [path.join(kfctlPath, "kfctl_k8s_istio"+versionCongfigPrefixUrl+".yaml")]);
 }
