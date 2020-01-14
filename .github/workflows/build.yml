@@ -25,9 +25,11 @@ jobs:
         kubectl cluster-info
         kubectl get po -A
         kind get kubeconfig > /home/runner/.kube/kind-config-kind
+        cat /home/runner/.kube/kind-config-kind
     # Install Kubeflow on the cluster using KFConfig
-    - uses: swiftdiaries/kfctl-kind-action@v1
+    - uses: swiftdiaries/kfctl-kind-action@master
       env:
         KUBECONFIG: "/home/runner/.kube/kind-config-kind"
-      with: 
+      with:
+        version: v0.7.0
         milliseconds: 1000
