@@ -1,14 +1,14 @@
-import * as core from '@actions/core';
-import {KubeflowConfig, getKubeflowConfig, installKubeflow, downloadKfctl, downloadKfConfig} from './kind-kf';
+import * as core from '@actions/core'
+import {KubeflowConfig, getKubeflowConfig, getKfctl} from './kind-kf'
 
 async function run() {
   try {
-    let cfg: KubeflowConfig = getKubeflowConfig();
-    await downloadKfConfig(cfg.version);
-    await downloadKfctl(cfg.version);
-    await installKubeflow(cfg.configFile);
+    const cfg: KubeflowConfig = getKubeflowConfig();
+    let toolPath: string = await getKfctl(cfg.version);
+    core.addPath(toolPath);
+    await cfg.deployKubeflow();
   } catch (error) {
-    core.setFailed(error.message);
+    core.setFailed(error.message)
   }
 }
 

@@ -1,54 +1,66 @@
 import * as core from '@actions/core';
+import * as tc from '@actions/tool-cache';
 import * as exec from '@actions/exec';
 import * as io from '@actions/io';
 import * as path from 'path';
 
 const VersionInput: string = "version";
 const ConfigInput: string = "config";
-const kfctlPath: string = "/home/runner/bin";
-const kfctlUrl: string = `https://github.com/kubeflow/kubeflow/releases/download/`;
+
+const toolName: string = "kfctl";
 
 export class KubeflowConfig {
-    version: string
-    configFile: string;
-    constructor(version: string, configFile: string) {
-        this.version = version;
-        console.log("kfctl version is :"+this.version)
-        if (this.version == "") {
-            this.version = "v0.7.1"
-        }
-        this.configFile = configFile;
+  configFile: string;
+  version: string;
+
+  constructor(version: string, configFile: string) {
+    this.version = version;
+    this.configFile = configFile;
+  }
+
+  assembleCommand(): string[] {
+    let args: string[] = ["apply", "-V",];
+    if (this.configFile != "") {
+      const wd: string = process.env[`GITHUB_WORKSPACE`] || "";
+      const absPath: string = path.join(wd, this.configFile);
+      args.push("-f", absPath);
     }
+
+    return args;
+  }
+
+  async deployKubeflow() {
+    console.log("Executing kfctl with config file: " + this.configFile);
+    await exec.exec("kfctl", this.assembleCommand());
+  }
 }
 
 export function getKubeflowConfig(): KubeflowConfig {
-    const v: string = core.getInput(VersionInput);
-    const c: string = core.getInput(ConfigInput);
-    return new KubeflowConfig(v, c)
+  const v: string = core.getInput(VersionInput);
+  const c: string = core.getInput(ConfigInput);
+
+  return new KubeflowConfig(v, c);
 }
 
-// TODO(swiftdiaries): set kubeflow version in download URL
-export async function downloadKfctl(version: string) {
-    await io.mkdirP(kfctlPath);
-    console.log("making directory at: " + kfctlPath);
-    console.log("extracting kfctl tarball to: " + kfctlPath + "/kfctl");
-    var kfctlVersionedUrl = kfctlUrl + version + `/kfctl_` + version + `_linux.tar.gz`;
-    await exec.exec("wget", ["-O", path.join(kfctlPath, "kfctl.tar.gz"), kfctlVersionedUrl]);
-    await exec.exec("tar", ["-zxvf", path.join(kfctlPath, "kfctl.tar.gz"), "-C", kfctlPath]);
-    console.log("The kfctl directory contains: ");
-    await exec.exec("ls", [kfctlPath]);
-    await exec.exec("chmod", ["+x", path.join(kfctlPath, "kfctl")]);
+// downloads kfctl and places it in the path
+export async function downloadKfctl(version: string): Promise<string> {
+  const kfctlPath = await tc.downloadTool(`https://github.com/kubeflow/kfctl/releases/download/${version}/kfctl_${version}-0-g9a3621e_linux.tar.gz`);
+  const kfctlExtractedFolder = await tc.extractTar(kfctlPath, 'bin');
+  
+  await exec.exec("chmod", ["+x", kfctlExtractedFolder]);
+  
+  const cachedPath = await tc.cacheFile(kfctlExtractedFolder, "kfctl", toolName, version);
+  core.debug(`kfctl is cached under ${cachedPath}`);
 
-    core.addPath("/home/.kube")
-    core.addPath(kfctlPath);
+  return cachedPath;
 }
 
-export async function installKubeflow(config: string) {
-    await exec.exec(path.join(kfctlPath, "kfctl"), ["apply", "-V", "-f", path.join(kfctlPath, "kfctl_k8s_istio.yaml")]);
-}
+export async function getKfctl(version: string): Promise<string> {
+  let toolPath: string = tc.find(toolName, version)
 
-export async function downloadKfConfig(version: string) {
-    const kfConfigUrl: string = `https://raw.githubusercontent.com/kubeflow/manifests/v0.7-branch/kfdef/kfctl_k8s_istio.0.7.0.yaml`;
-    await exec.exec("wget", ["-O", path.join(kfctlPath, "kfctl_k8s_istio.yaml"), kfConfigUrl]);
-    await exec.exec("cat", [path.join(kfctlPath, "kfctl_k8s_istio.yaml")]);
+  if (toolPath === "") {
+    toolPath = await downloadKfctl(version);
+  }
+
+  return toolPath
 }

@@ -7,11 +7,12 @@ on:
       - 'releases/*'
 
 jobs:
-  e2e-v1-releases:
+  e2e:
     runs-on: ubuntu-latest
     steps:
     - name: checkout the repo
-      uses: actions/checkout@v1
+      uses: actions/checkout@v2
+
     # Build the GitHub Action
     - run: npm install
     - run: npm run-script build
@@ -19,35 +20,7 @@ jobs:
     - name: create KinD cluster
       uses: engineerd/setup-kind@v0.1.0
       with:
-          version: "v0.6.1"  
-
-    - name: test KinD cluster status
-      run: |
-        kubectl cluster-info
-        kubectl get po -A
-        kind get kubeconfig > /home/runner/.kube/kind-config-kind
-        cat /home/runner/.kube/kind-config-kind
-    # Install Kubeflow on the cluster using KFConfig
-    - name: Install Kubeflow using kfctl
-      uses: swiftdiaries/kfctl-kind-action@releases/v1
-      env:
-        KUBECONFIG: "/home/runner/.kube/kind-config-kind"
-      with:
-        version: v0.7.0
-        milliseconds: 1000
-  e2e-master:
-    runs-on: ubuntu-latest
-    steps:
-    - name: checkout the repo
-      uses: actions/checkout@v1
-    # Build the GitHub Action
-    - run: npm ci
-    - run: npm run-script build
-
-    - name: create KinD cluster
-      uses: engineerd/setup-kind@v0.1.0
-      with:
-          version: "v0.6.1"
+          version: "v0.7.0"  
 
     - name: test KinD cluster status
       run: |
@@ -56,10 +29,11 @@ jobs:
         kind get kubeconfig > /home/runner/.kube/kind-config-kind
         cat /home/runner/.kube/kind-config-kind
 
-    # Install Kubeflow on the cluster using KFConfig
+    # Install Kubeflow 
     - name: Install Kubeflow using kfctl
-      uses: swiftdiaries/kfctl-kind-action@releases/v1
+      uses: swiftdiaries/kfctl-action@releases/v1
       env:
         KUBECONFIG: "/home/runner/.kube/kind-config-kind"
       with:
-        milliseconds: 1000
+        version: v1.1.0
+        config: "config/kfctl_k8s_istio.v1.1.0.yaml"
