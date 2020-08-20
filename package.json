@@ -1,8 +1,8 @@
 {
-  "name": "typescript-action",
+  "name": "kfctl-action",
   "version": "0.1.0",
   "private": true,
-  "description": "TypeScript template action",
+  "description": "kfctl action",
   "main": "lib/main.js",
   "scripts": {
     "build": "tsc",
@@ -18,10 +18,10 @@
     "node",
     "setup"
   ],
-  "author": "YourNameOrOrganization",
+  "author": "Adhita Selvaraj <adhita.selvaraj@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "@actions/core": "^1.2.0",
+    "@actions/core": "^1.2.4",
     "@actions/exec": "^1.0.1",
     "@actions/io": "^1.0.1",
     "@actions/tool-cache": "^1.1.2",

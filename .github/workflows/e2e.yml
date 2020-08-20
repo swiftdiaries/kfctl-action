@@ -36,4 +36,4 @@ jobs:
         KUBECONFIG: "/home/runner/.kube/kind-config-kind"
       with:
         version: v1.1.0
-        config: "config/kfctl_k8s_istio.v1.1.0.yaml"
+        config: config/kfctl_k8s_istio.v1.1.0.yaml
